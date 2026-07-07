@@ -41,6 +41,39 @@ De in PDF on dinh, nen cai SumatraPDF va dien duong dan:
 PDF_PRINT_APP_PATH=C:/Program Files/SumatraPDF/SumatraPDF.exe
 ```
 
+Neu muon chi in mot so trang trong PDF, them:
+
+```env
+PRINT_PAGES=1-3,5,last
+```
+
+Gia tri nay tuong ung voi settings cua SumatraPDF, vi du:
+
+- `1-3,5,last` in trang 1 den 3, trang 5 va trang cuoi
+- `odd` in trang le
+- `even` in trang chan
+- `-2--1` in 2 trang cuoi
+
+Luu y: worker da co rule tu dong theo ten file PDF:
+
+- `HAN{han_code}.pdf` se chi in trang 1
+- `ApplyForm_{code}.pdf` se in trang 1 va 7, dong thoi in 2 mat
+
+Neu file khong khop 2 rule nay thi worker moi dung `PRINT_PAGES` va `PRINT_DUPLEX` lam fallback.
+
+Neu muon bat in 2 mat cho PDF, them:
+
+```env
+PRINT_DUPLEX=long
+```
+
+Gia tri ho tro:
+
+- `long` hoac `duplexlong` cho lat theo canh dai
+- `short` hoac `duplexshort` cho lat theo canh ngan
+- `simplex` de ep in 1 mat
+- `off` de bo qua cau hinh nay
+
 ## Chay thu
 
 ```powershell
@@ -100,4 +133,6 @@ Go khoi Startup:
 - `EMAIL_DONE_MAILBOX=ho_so_da_in` la nhan/mailbox dich sau khi da tai attachment. De trong bien nay neu khong muon chuyen email.
 - `POLL_INTERVAL_SECONDS=600` nghia la worker quet nhan nguon moi 10 phut.
 - `PDF_PRINT_APP_PATH` nen tro toi `SumatraPDF.exe` neu Windows bao loi khong co app nao gan voi thao tac in PDF.
+- `PRINT_PAGES` chi ap dung cho file PDF khi in qua SumatraPDF.
+- `PRINT_DUPLEX` chi ap dung on dinh cho file PDF khi in qua SumatraPDF; voi file khac, worker van in theo app/mac dinh cua may in.
 - Neu in PDF khong hoat dong, cai SumatraPDF/Adobe Reader va dat app mac dinh cho `.pdf`.

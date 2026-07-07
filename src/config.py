@@ -49,6 +49,8 @@ class Config:
     printed_dir: Path
     printer_name: str | None
     pdf_print_app_path: Path | None
+    print_pages: str | None
+    print_duplex: str | None
     print_wait_seconds: int
     delete_printed_dir_on_start: bool
     delete_printed_dir_each_cycle: bool
@@ -62,6 +64,30 @@ def load_config() -> Config:
     base_dir = Path(os.getenv("BASE_DIR", "C:/ho_so_in"))
     pending_dir = Path(os.getenv("PENDING_DIR", str(base_dir / "chua_in")))
     printed_dir = Path(os.getenv("PRINTED_DIR", str(base_dir / "da_in")))
+    print_pages = os.getenv("PRINT_PAGES") or None
+    print_duplex_raw = os.getenv("PRINT_DUPLEX") or None
+    print_duplex: str | None = None
+    if print_duplex_raw:
+        normalized_duplex = print_duplex_raw.strip().lower()
+        duplex_aliases = {
+            "off": None,
+            "single": "simplex",
+            "simplex": "simplex",
+            "1": "simplex",
+            "short": "duplexshort",
+            "duplexshort": "duplexshort",
+            "shortedge": "duplexshort",
+            "long": "duplexlong",
+            "duplexlong": "duplexlong",
+            "longedge": "duplexlong",
+            "duplex": "duplex",
+        }
+        if normalized_duplex not in duplex_aliases:
+            raise ValueError(
+                "Invalid PRINT_DUPLEX value. Use off, simplex, short, long, duplexshort, or duplexlong."
+            )
+        print_duplex = duplex_aliases[normalized_duplex]
+
     allowed_extensions = {
         item.strip().lower()
         for item in os.getenv("ALLOWED_EXTENSIONS", ".pdf").split(",")
@@ -83,6 +109,8 @@ def load_config() -> Config:
         printed_dir=printed_dir,
         printer_name=os.getenv("PRINTER_NAME") or None,
         pdf_print_app_path=Path(os.environ["PDF_PRINT_APP_PATH"]) if os.getenv("PDF_PRINT_APP_PATH") else None,
+        print_pages=print_pages,
+        print_duplex=print_duplex,
         print_wait_seconds=_int_env("PRINT_WAIT_SECONDS", 10),
         delete_printed_dir_on_start=_bool_env("DELETE_PRINTED_DIR_ON_START", True),
         delete_printed_dir_each_cycle=_bool_env("DELETE_PRINTED_DIR_EACH_CYCLE", False),

@@ -48,7 +48,14 @@ def run_cycle(config: Config, mail_client: MailClient) -> None:
     for file_path in printable_files:
         try:
             logging.info("Printing: %s", file_path)
-            print_file(file_path, config.printer_name, config.print_wait_seconds, config.pdf_print_app_path)
+            print_file(
+                file_path,
+                config.printer_name,
+                config.print_wait_seconds,
+                config.pdf_print_app_path,
+                config.print_pages,
+                config.print_duplex,
+            )
             moved_to = move_to_printed(file_path, config.pending_dir, config.printed_dir)
             logging.info("Moved printed file to: %s", moved_to)
         except Exception:
