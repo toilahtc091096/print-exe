@@ -1,11 +1,24 @@
 from __future__ import annotations
 
 import shutil
-import zipfile
 from pathlib import Path
 
 
-ARCHIVE_EXTENSIONS = {".zip"}
+ARCHIVE_EXTENSIONS = {
+    ".zip",
+    ".tar",
+    ".tar.gz",
+    ".tgz",
+    ".tar.bz2",
+    ".tbz2",
+    ".tar.xz",
+    ".txz",
+}
+
+
+def _is_archive(path: Path) -> bool:
+    name = path.name.lower()
+    return any(name.endswith(extension) for extension in ARCHIVE_EXTENSIONS)
 
 
 def ensure_directories(*paths: Path) -> None:
@@ -41,13 +54,12 @@ def extract_archives(root: Path) -> list[Path]:
     extracted_dirs: list[Path] = []
 
     for archive_path in list(root.rglob("*")):
-        if not archive_path.is_file() or archive_path.suffix.lower() not in ARCHIVE_EXTENSIONS:
+        if not archive_path.is_file() or not _is_archive(archive_path):
             continue
 
         target_dir = unique_path(archive_path.with_suffix(""))
         target_dir.mkdir(parents=True, exist_ok=False)
-        with zipfile.ZipFile(archive_path) as archive:
-            archive.extractall(target_dir)
+        shutil.unpack_archive(str(archive_path), str(target_dir))
         archive_path.unlink()
         extracted_dirs.append(target_dir)
 

@@ -43,8 +43,8 @@ def _infer_sumatra_print_settings(
     if re.fullmatch(r"HAN[0-9A-Za-z]+", stem):
         return ["1"], "matched HAN filename rule"
 
-    if re.fullmatch(r"ApplyForm_[0-9A-Za-z]+", stem):
-        return ["1,7", "duplexlong"], "matched ApplyForm filename rule"
+    if re.fullmatch(r"\d+", stem):
+        return ["1,7", "duplexlong"], "matched numeric filename rule"
 
     return _build_sumatra_print_settings(print_pages, print_duplex), None
 

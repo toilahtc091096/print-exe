@@ -1,6 +1,6 @@
 # HoSoInWorker
 
-Worker Windows de doc email qua IMAP, tai attachment tu mailbox/label `ho_so_in`, dua vao `C:/ho_so_in/chua_in`, giai nen file zip, in file hop le, roi chuyen file da in sang `C:/ho_so_in/da_in`.
+Worker Windows de doc email qua IMAP, tai attachment tu mailbox/label `ho_so_in`, dua vao `C:/ho_so_in/chua_in`, giai nen file archive/phong nen ho tro boi Python, in file hop le, roi chuyen file da in sang `C:/ho_so_in/da_in`.
 
 ## Yeu cau
 
@@ -122,7 +122,7 @@ Go khoi Startup:
 4. Tai attachment xuong `C:/ho_so_in/chua_in`.
 5. Chuyen email da tai attachment sang `EMAIL_DONE_MAILBOX` de tranh quet lai.
 6. Xoa noi dung `C:/ho_so_in/da_in` khi worker khoi dong.
-7. Kiem tra `chua_in`: file `.zip` se duoc giai nen, folder/pdf/file hop le duoc giu de in.
+7. Kiem tra `chua_in`: file `.zip`, `.tar`, `.tar.gz`, `.tgz`, `.tar.bz2`, `.tbz2`, `.tar.xz`, `.txz` se duoc giai nen, folder/pdf/file hop le duoc giu de in.
 8. In tat ca file co extension trong `ALLOWED_EXTENSIONS`.
 9. Chuyen file da in sang `C:/ho_so_in/da_in`.
 
