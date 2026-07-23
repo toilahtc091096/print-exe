@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import time
 import shutil
 from pathlib import Path
 
@@ -74,12 +75,32 @@ def iter_printable_files(root: Path, allowed_extensions: set[str]) -> list[Path]
     return sorted(files, key=lambda item: str(item).lower())
 
 
-def move_to_printed(path: Path, pending_dir: Path, printed_dir: Path) -> Path:
+def move_to_printed(
+    path: Path,
+    pending_dir: Path,
+    printed_dir: Path,
+    *,
+    retries: int = 5,
+    retry_delay_seconds: float = 1.0,
+) -> Path:
     relative_path = path.relative_to(pending_dir)
-    target = unique_path(printed_dir / relative_path)
-    target.parent.mkdir(parents=True, exist_ok=True)
-    shutil.move(str(path), str(target))
-    return target
+
+    last_error: OSError | None = None
+    for attempt in range(retries + 1):
+        target = unique_path(printed_dir / relative_path)
+        target.parent.mkdir(parents=True, exist_ok=True)
+
+        try:
+            shutil.move(str(path), str(target))
+            return target
+        except OSError as exc:
+            last_error = exc
+            if attempt >= retries:
+                break
+            time.sleep(retry_delay_seconds)
+
+    assert last_error is not None
+    raise last_error
 
 
 def remove_empty_dirs(root: Path) -> None:

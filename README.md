@@ -1,6 +1,6 @@
 # HoSoInWorker
 
-Worker Windows de doc email qua IMAP, tai attachment tu mailbox/label `ho_so_in`, dua vao `C:/ho_so_in/chua_in`, giai nen file archive/phong nen ho tro boi Python, in file hop le, roi chuyen file da in sang `C:/ho_so_in/da_in`.
+Worker Windows de doc email qua IMAP, tai attachment tu mailbox/label con, dua vao `C:/ho_so_in/chua_in`, giai nen file archive/phong nen ho tro boi Python, in file hop le, roi chuyen file da in sang `C:/ho_so_in/da_in`.
 
 ## Yeu cau
 
@@ -19,8 +19,13 @@ EMAIL_IMAP_HOST=imap.gmail.com
 EMAIL_IMAP_PORT=993
 EMAIL_IMAP_USER=your-email@gmail.com
 EMAIL_IMAP_PASSWORD=your-app-password
-EMAIL_IMAP_MAILBOX=ho_so_in
-EMAIL_DONE_MAILBOX=ho_so_da_in
+# Case phong
+EMAIL_IMAP_MAILBOX=ho_so/phong/ho_so_in_phong
+EMAIL_DONE_MAILBOX=ho_so/phong/ho_so_da_in_phong
+
+# Case hai
+# EMAIL_IMAP_MAILBOX=ho_so/hai/ho_so_in_hai
+# EMAIL_DONE_MAILBOX=ho_so/hai/ho_so_da_in_hai
 EMAIL_IMAP_TIMEOUT_SECONDS=30
 EMAIL_SEARCH_CRITERIA=ALL
 POLL_INTERVAL_SECONDS=600
@@ -117,7 +122,7 @@ Go khoi Startup:
 ## Luong xu ly
 
 1. Doc email tu IMAP theo `.env`.
-2. Select mailbox/label `EMAIL_IMAP_MAILBOX`, mac dinh `ho_so_in`.
+2. Select mailbox/label `EMAIL_IMAP_MAILBOX`, vi du `ho_so/phong/ho_so_in_phong`.
 3. Search email theo `EMAIL_SEARCH_CRITERIA`, mac dinh `ALL`.
 4. Tai attachment xuong `C:/ho_so_in/chua_in`.
 5. Chuyen email da tai attachment sang `EMAIL_DONE_MAILBOX` de tranh quet lai.
@@ -130,7 +135,7 @@ Go khoi Startup:
 
 - `DELETE_PRINTED_DIR_ON_START=true` se xoa noi dung `da_in` moi lan worker khoi dong.
 - `DELETE_PRINTED_DIR_EACH_CYCLE=false` de tranh xoa file vua in lien tuc trong luc worker dang chay.
-- `EMAIL_DONE_MAILBOX=ho_so_da_in` la nhan/mailbox dich sau khi da tai attachment. De trong bien nay neu khong muon chuyen email.
+- `EMAIL_DONE_MAILBOX` nen dung dung full IMAP path tuong ung voi `EMAIL_IMAP_MAILBOX`, vi du `ho_so/phong/ho_so_da_in_phong`.
 - `POLL_INTERVAL_SECONDS=600` nghia la worker quet nhan nguon moi 10 phut.
 - `PDF_PRINT_APP_PATH` nen tro toi `SumatraPDF.exe` neu Windows bao loi khong co app nao gan voi thao tac in PDF.
 - `PRINT_PAGES` chi ap dung cho file PDF khi in qua SumatraPDF.

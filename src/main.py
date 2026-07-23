@@ -56,10 +56,15 @@ def run_cycle(config: Config, mail_client: MailClient) -> None:
                 config.print_pages,
                 config.print_duplex,
             )
+        except Exception:
+            logging.exception("Failed to print file: %s", file_path)
+            continue
+
+        try:
             moved_to = move_to_printed(file_path, config.pending_dir, config.printed_dir)
             logging.info("Moved printed file to: %s", moved_to)
         except Exception:
-            logging.exception("Failed to print file: %s", file_path)
+            logging.exception("Printed file but failed to move it to printed directory: %s", file_path)
 
     remove_empty_dirs(config.pending_dir)
 
